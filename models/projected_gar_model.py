@@ -13,11 +13,8 @@ gar_24_25 = pd.read_csv("/Users/matthoulihan/PycharmProjects/NHLFreeAgentEvaluat
 
 free_agents_df = pd.read_csv("/Users/matthoulihan/PycharmProjects/NHLFreeAgentEvaluationModel/data/cleaned_free_agents_2025 (1).csv")
 
-# Check for duplicate player names
 print(f"Free Agents Duplicate Players: {free_agents_df.duplicated(subset=['player_name']).sum()}")
 
-
-# Rename columns for consistency
 gar_22_23 = gar_22_23.rename(columns={"Player": "player_name", "TOI_All": "TOI_22_23", "GAR": "GAR_22_23"})
 gar_23_24 = gar_23_24.rename(columns={"Player": "player_name", "TOI_All": "TOI_23_24", "GAR": "GAR_23_24"})
 gar_24_25 = gar_24_25.rename(columns={"Player": "player_name", "TOI_All": "TOI_24_25", "GAR": "GAR_24_25"})
@@ -92,11 +89,11 @@ y_pred = ridge_model.predict(X_test_scaled)
 mae = mean_absolute_error(y_test, y_pred)
 r_squared = r2_score(y_test, y_pred)
 
-print(f"📊 Projected GAR Model - MAE: {mae:.4f}, R²: {r_squared:.3f}")
+print(f" Projected GAR Model - MAE: {mae:.4f}, R²: {r_squared:.3f}")
 
 y_final_pred = ridge_model.predict(scaler.transform(free_agents_df[features]))
 free_agents_df["Final_Predicted_GAR_25_26"] = y_final_pred
 
 output_path = "/Users/matthoulihan/PycharmProjects/NHLFreeAgentEvaluationModel/GAR Stats/projected_gar_25-26_final.csv"
 free_agents_df[["player_name", "Final_Predicted_GAR_25_26"]].to_csv(output_path, index=False)
-print(f"✅ Final Projected GAR saved to: {output_path}")
+print(f" Final Projected GAR saved to: {output_path}")
