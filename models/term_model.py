@@ -12,7 +12,6 @@ contracts_file = "/Users/matthoulihan/PycharmProjects/NHLFreeAgentEvaluationMode
 free_agents_df = pd.read_csv(free_agents_file)
 contracts_df = pd.read_csv(contracts_file)
 
-# Ensure the Age column exists for merging
 if 'Age' not in contracts_df.columns:
     for col in contracts_df.columns:
         if 'Age' in col:
@@ -74,19 +73,17 @@ X_train_optimized, X_test_optimized, y_train_optimized, y_test_optimized = train
     X_optimized.fillna(X_optimized.median()), y_optimized, test_size=0.2, random_state=42
 )
 
-
 scaler_optimized = StandardScaler()
 X_train_optimized_scaled = scaler_optimized.fit_transform(X_train_optimized)
 X_test_optimized_scaled = scaler_optimized.transform(X_test_optimized)
 
-# Train Random Forest model for contract term predictions
+# Train Random Forest model 
 rf_model_optimized = RandomForestRegressor(n_estimators=200, max_depth=10, random_state=42)
 rf_model_optimized.fit(X_train_optimized_scaled, y_train_optimized)
 
 
 y_pred_optimized = rf_model_optimized.predict(X_test_optimized_scaled)
 
-# Apply the model
 for feature in ['TOI%', 'GAR', 'TOI', 'iCF', 'A1', 'Goals']:
     free_agents_df[f'{feature}_Weighted_Optimized'] = apply_optimized_weights(
         free_agents_df.get(f'{feature}_24_25', 0),
